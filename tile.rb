@@ -1,10 +1,12 @@
 class Tile
   POSSIBLE_MOVES = [[1,1],[1,-1],[-1,1],[-1,-1],[0,1],[1,0],[0,-1],[-1,0]]
   UPPER_LIMIT = 8
-  attr_reader :is_bomb, :flagged, :pos, :board
-  attr_accessor :value
+  attr_reader :is_bomb, :pos, :board
+  attr_accessor :value, :revealed, :flagged
 
   #create a "state" hash
+  #add ? methods for accessing t/f instance variables
+  #write new inspect
   def initialize(board, pos, is_bomb=false)
     @pos = pos
     @board = board
@@ -14,32 +16,41 @@ class Tile
     @value = nil
   end
 
-  def inspect
-    @pos.inspect
-    is_bomb.inspect
-    flagged.inspect
-    revealed.inspect
-  end
+  # def inspect
+  #   @pos.inspect
+  #   is_bomb.inspect
+  #   flagged.inspect
+  #   revealed.inspect
+  # end
 
   #maybe add is_bomb logic/check etc.
   def reveal
-    revealed = true
+
+    return if self.revealed
+    self.revealed = true
 
     if neighbor_bomb_count > 0
-      value = neighbor_bomb_count
+      self.value = neighbor_bomb_count
       return
     end
-
-    unless flagged && revealed && is_bomb
-      neighbors.each{|chill_neighbor| chill_neighbor.reveal}
+    # p neighbors
+    self.neighbors.each do |nei|
+      if !nei.flagged && !nei.revealed && !nei.is_bomb
+        nei.reveal
+      end
     end
-
+    # unless flagged && revealed && is_bomb
+    #   neighbors.each{|chill_neighbor| chill_neighbor.reveal}
+    # end
+    return
   end
 
-
+  def inspect
+    p @pos
+  end
 
   def flag
-    flagged ? (flagged = false) : (flagged = true)
+    flagged ? (flagged = true) : (flagged = false)
   end
 
   #return array of neighbors
@@ -61,6 +72,6 @@ class Tile
 
   def neighbor_bomb_count
     explosive_neighbors = neighbors.select { |neighbor| neighbor.is_bomb}
-    explosive_neighbors.length
+    p explosive_neighbors.length
   end
 end
