@@ -2,6 +2,7 @@ class Tile
   POSSIBLE_MOVES = [[1,1],[1,-1],[-1,1],[-1,-1],[0,1],[1,0],[0,-1],[-1,0]]
   UPPER_LIMIT = 8
   attr_reader :is_bomb, :flagged, :pos, :board
+  attr_accessor :value
 
   #create a "state" hash
   def initialize(board, pos, is_bomb=false)
@@ -20,9 +21,8 @@ class Tile
     revealed.inspect
   end
 
-  def reveal
-    revealed = true
-  end
+  #maybe add is_bomb logic/check etc.
+
 
   def flag
     flagged ? (flagged = false) : (flagged = true)
@@ -45,7 +45,8 @@ class Tile
     neighbors.reject{|move| (move.max > UPPER_LIMIT || move.min < 0)}
   end
 
-
-
-
+  def neighbor_bomb_count
+    explosive_neighbors = neighbors.select { |neighbor| neighbor.is_bomb}
+    explosive_neighbors.length
+  end
 end
