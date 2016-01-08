@@ -9,7 +9,7 @@ UPPER_LIMIT = 8
 
 
   #pos = [row, col]
-  def initialize(board, pos, is_bomb = false)
+  def initialize(board=nil, pos, is_bomb = false)
     @pos = pos
     @board = board
     @is_bomb = is_bomb
