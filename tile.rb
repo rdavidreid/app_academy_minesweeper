@@ -1,20 +1,16 @@
 class Tile
-POSSIBLE_MOVES = [[1,1],[1,-1],[-1,1],[-1,-1],[0,1],[1,0],[0,-1],[-1,0]]
-UPPER_LIMIT = 8
-  attr_reader :reader, :is_bomb, :flagged, :pos
-#testing
-# def board
-#   Array.new(5){Array.new(5)}
-# end
+  POSSIBLE_MOVES = [[1,1],[1,-1],[-1,1],[-1,-1],[0,1],[1,0],[0,-1],[-1,0]]
+  UPPER_LIMIT = 8
+  attr_reader :is_bomb, :flagged, :pos, :board
 
-
-  #pos = [row, col]
-  def initialize(board=nil, pos, is_bomb = false)
+  #create a "state" hash
+  def initialize(board, pos, is_bomb=false)
     @pos = pos
     @board = board
     @is_bomb = is_bomb
     @flagged = false
     @revealed = false
+    @value = nil
   end
 
   def inspect
@@ -34,7 +30,11 @@ UPPER_LIMIT = 8
 
   #return array of neighbors
   def neighbors
-
+    neighbors = []
+    generate_valid_moves.each do |pos|
+      neighbors << board[pos]
+    end
+    neighbors
   end
 
   def generate_valid_moves
@@ -44,6 +44,8 @@ UPPER_LIMIT = 8
     end
     neighbors.reject{|move| (move.max > UPPER_LIMIT || move.min < 0)}
   end
+
+
 
 
 end
