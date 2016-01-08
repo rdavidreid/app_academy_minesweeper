@@ -22,6 +22,20 @@ class Tile
   end
 
   #maybe add is_bomb logic/check etc.
+  def reveal
+    revealed = true
+
+    if neighbor_bomb_count > 0
+      value = neighbor_bomb_count
+      return
+    end
+
+    unless flagged && revealed && is_bomb
+      neighbors.each{|chill_neighbor| chill_neighbor.reveal}
+    end
+
+  end
+
 
 
   def flag
