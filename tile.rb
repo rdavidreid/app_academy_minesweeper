@@ -74,4 +74,5 @@ class Tile
     explosive_neighbors = neighbors.select { |neighbor| neighbor.is_bomb}
     p explosive_neighbors.length
   end
+
 end

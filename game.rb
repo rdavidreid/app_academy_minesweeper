@@ -1,4 +1,8 @@
-require_relative 'board.rb', 'tile.rb', 'player.rb'
+require_relative 'board.rb'
+require_relative 'tile.rb'
+require_relative 'player.rb'
+
+
 
 class Game
   attr_reader :board
